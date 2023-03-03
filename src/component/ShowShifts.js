@@ -63,9 +63,6 @@ function ShowShifts() {
 
   if (error) return `An error has occurred: ${error.message}`;
 
-  return <div className={''}>
-
-  </div>;
   if (data) {
     return data.map(
         (shiftObject) => <ShiftsDetail shiftObject={shiftObject}/>,
