@@ -68,15 +68,20 @@ function ShowShifts() {
     }),
   });
 
-  if (isLoading) return 'Loading Data...';
+  const shiftDetail = () => {
+    if (isLoading) return 'Loading Data...';
+    if (error) return `An error has occurred: ${error.message}`;
+    if (data) {
+      return data.map(
+          (shiftObject) => <ShiftsDetail shiftObject={shiftObject}
+                                         key={shiftObject.dutyNumber}/>);
+    }
+  };
 
-  if (error) return `An error has occurred: ${error.message}`;
-
-  if (data) {
-    return data.map(
-        (shiftObject) => <ShiftsDetail shiftObject={shiftObject}
-                                       key={shiftObject.dutyNumber}/>);
-  }
+  return <div>
+    <h1 className={'accent-gray-200'}>Below shows the result</h1>
+    {shiftDetail()}
+  </div>;
 
 }
 
