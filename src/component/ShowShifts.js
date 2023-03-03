@@ -28,21 +28,30 @@ function thoseYouNeed(targetArray, isDead) {
     const from = new Date('2000-01-02T00:30:00');
     const to = new Date('2000-01-01 06:15:00');
 
+    const allPrefixes = targetArray.map(
+        ({dutyNumber}) => dutyNumber.substring(0, 3));
+    const prefixes = [...new Set(allPrefixes)];
+
+    console.log(prefixes);
+
     const queryType = isDead ? (shiftObject) => {
-      const {bNT, bFT, remarks} = shiftObject;
+      const {dutyNumber, bNT, bFT, remarks} = shiftObject;
+
+      const prefix = dutyNumber.substring(0, 3);
       const vBNT = getValidTimeStr(bNT);
       const vBFT = getValidTimeStr(bFT);
       const shiftStart = new Date(vBNT);
       const shiftEnd = new Date(vBFT);
 
-      return shiftEnd >= from && remarks === 'EMU';
+      return shiftEnd >= from && prefix == 'C15';
+
     } : (shiftObject) => {
       console.log('Nope');
     };
 
     const results = targetArray.filter(queryType);
+
     if (results.length > 0) {
-      // console.log(results);
       resolve(results);
     } else {
       reject(new Error('No results found'));
@@ -65,8 +74,8 @@ function ShowShifts() {
 
   if (data) {
     return data.map(
-        (shiftObject) => <ShiftsDetail shiftObject={shiftObject}/>,
-    );
+        (shiftObject) => <ShiftsDetail shiftObject={shiftObject}
+                                       key={shiftObject.dutyNumber}/>);
   }
 
 }
